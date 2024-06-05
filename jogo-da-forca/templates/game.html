@@ -8,11 +8,11 @@
 </head>
 <body>
     <h1>Jogo da Forca</h1>
-    <p>Palavra: {{ " ".join(palavra_oculta) }}</p>
-    <p>Tentativas: {{ ", ".join(tentativas) }}</p>
-    <p>Vidas restantes: {{ vidas }}</p>
+    <p>Palavra: {{ " ".join(session['palavra_oculta']) }}</p>
+    <p>Letras Usadas: {{ " ".join(session['used_letters']) }}</p>
+    <p>Vidas Restantes: {{ session['vidas'] }}</p>
     <form method="POST">
-        <input type="text" name="letter" maxlength="1" required>
+        <input type="text" name="letter" maxlength="1" required autocomplete="off">
         <button type="submit">Tentar</button>
     </form>
     <p> {{ message }}</p>

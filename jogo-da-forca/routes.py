@@ -12,36 +12,58 @@ def configure_routes(app):
         if request.method == 'POST':
             difficulty = request.form.get('difficulty')
             session['difficulty'] = difficulty
-            session["used_letters"] = set()
+            
             word = AI.get_word(session['difficulty'])
-            session["word"] = hg.to_alpha(word)
-            return redirect(url_for("game"))
+            session['word'] = hg.to_alpha(word)
+            
+            session['used_letters'] = ""
+            session['vidas'] = 5
+            
+            session['original_word'] = session['word']
+            session['palavra_oculta'] = "_"*len(session['word'])
+            return redirect(url_for('game'))
         
         return render_template('difficulty.html')
     
 
     @app.route('/game', methods=['GET', 'POST'])
     def game() -> Response:
-        if "difficulty" not in session:
+        if 'difficulty' not in session:
             return redirect(url_for("chose_difficulty"))
         
-        
         if request.method == 'POST':
+            message = ""
+            message_status = ""
+            
             letter = request.form.get('letter')
             # Verifica se a letra é valida
-            if len(hg.to_alpha(letter)) == 0:
-                return render_template('game.html', message = "Entrada invalida!")
-            if hg.to_alpha(letter) in session["used_letters"]:
-                return render_template('game.html', message = "Letra já usada!")
-            session['letter'] = letter
+            letter = hg.to_alpha(letter)
+            
+            if len(letter) == 0:
+                message = "Entrada invalida!"
+                message_status = "error"
+            elif letter in session['used_letters']:
+                message = "Letra já usada!"
+                message_status = "error"
             
             
             
+            elif not letter in session['word']:
+                session['vidas'] -= 1
+                message = "Letra não está na palavra! -1 vida."
+                message_status = "bad"
+                
+            else:
+                session['palavra_oculta'], session['word'] = hg.update_word(session['palavra_oculta'], session['word'], letter)
+                message = "Letra está na palavra! :)"
+                message_status = "good"
             
+            session['used_letters'] += letter
             
+            if hg.game_state(session['palavra_oculta'], session['vidas']):
+                return redirect(url_for(hg.game_state(session['palavra_oculta'], session['vidas'])))
             
-            return redirect(url_for("game"))
-        
+            return render_template('game.html', message = message, message_status = message_status)
         
         return render_template('game.html')
     
