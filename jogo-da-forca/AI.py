@@ -1,8 +1,8 @@
 import openai as ai
 from dotenv import load_dotenv, find_dotenv
 import os
-from unidecode import unidecode
 from typing import List
+
 
 _ = load_dotenv(find_dotenv())
 
@@ -10,11 +10,10 @@ client = ai.OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 
 def get_prompt(dificuldade: str) -> List:
-    prompt = [{"role":"user",
-               "content": f"""Escolha aleatoriamente uma palavra para uma rodada do jogo da forca. 
-               Responda somente com A PALAVRA, nada mais, nada menos. 
-               A palavra deve a dificuldade: {dificuldade}"""}]
-    return prompt
+    return [{"role":"user",
+             "content": f"""Escolha aleatoriamente uma palavra para uma rodada do jogo da forca. 
+             Responda somente com A PALAVRA, nada mais, nada menos. 
+             A palavra deve a dificuldade: {dificuldade}"""}]
 
 
 def get_word(dificuldade: str, model = 'gpt-3.5-turbo-0125', max_tokens = 100, temperature = 1) -> str:
@@ -27,7 +26,7 @@ def get_word(dificuldade: str, model = 'gpt-3.5-turbo-0125', max_tokens = 100, t
         temperature (int, optional): "Diversidade/Aleatoriedade" das palavras. Defaults to 1.
 
     Returns:
-        str: A palavra maiúscula e tratada para o jogo.
+        str: A resposta do GPT (palavra).
     """
     response = client.chat.completions.create(
         messages = get_prompt(dificuldade),
@@ -36,7 +35,4 @@ def get_word(dificuldade: str, model = 'gpt-3.5-turbo-0125', max_tokens = 100, t
         temperature = temperature
         )
 
-    # Tratamento da palavra (maiúscula, só alfabéticos, sem acentuação, etc)
-    palavra = response.choices[0].message.content.upper()
-    palavra = "".join(filter(str.isalpha, palavra))
-    return unidecode(palavra)
+    return response.choices[0].message.content

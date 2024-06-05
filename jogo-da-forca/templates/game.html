@@ -12,8 +12,9 @@
     <p>Tentativas: {{ ", ".join(tentativas) }}</p>
     <p>Vidas restantes: {{ vidas }}</p>
     <form method="POST">
-        <input type="text" name="letra" maxlength="1" required>
+        <input type="text" name="letter" maxlength="1" required>
         <button type="submit">Tentar</button>
     </form>
+    <p> {{ message }}</p>
 </body>
 </html>
