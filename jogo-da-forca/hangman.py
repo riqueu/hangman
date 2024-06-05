@@ -4,13 +4,8 @@ from unidecode import unidecode
 def to_alpha(string: str):
     return unidecode("".join(filter(str.isalpha, string)).upper())
 
-def levar_dano(vidas):
-    return vidas - 1
-
 def update_word(palavra_oculta, word, letter):
-    print(palavra_oculta, word, letter)
     for index in range(len(word)):
-        print("Entrei")
         # Para cada letra, verifica se eh a letra procurada
         if word[index] == letter:
             # Se sim, substitui na palavra oculta

@@ -11,9 +11,9 @@ client = ai.OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 def get_prompt(dificuldade: str) -> List:
     return [{"role":"user",
-             "content": f"""Escolha aleatoriamente uma palavra para uma rodada do jogo da forca. 
-             Responda somente com A PALAVRA, nada mais, nada menos. 
-             A palavra deve a dificuldade: {dificuldade}"""}]
+             "content": f"""Escolha aleatoriamente uma palavra em uma lista de palavras aleatórias 
+             para uma rodada do jogo da forca. Responda somente com A PALAVRA,
+             nada mais, nada menos. A palavra deve a dificuldade: {dificuldade}"""}]
 
 
 def get_word(dificuldade: str, model = 'gpt-3.5-turbo-0125', max_tokens = 100, temperature = 1) -> str:
