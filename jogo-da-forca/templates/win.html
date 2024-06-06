@@ -29,7 +29,7 @@
 </head>
 <body>
     <h1>Parabéns, você venceu!</h1>
-    <form method="POST" action="{{ url_for('chose_difficulty') }}">
+    <form method="POST" action="{{ url_for('win') }}">
         <button type="submit">Jogar novamente</button>
     </form>
     <h3 class="end_game">Vidas restantes: {{ session['lives'] }}</h3>

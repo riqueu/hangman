@@ -1,0 +1,1 @@
+Flask, unidecode, routes, openai, dotenv

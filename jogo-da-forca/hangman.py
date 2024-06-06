@@ -18,6 +18,6 @@ def game_state(hidden_word, lives):
         return 'win'
     elif lives == 0:
         return 'lose'
+    # jogo segue
     return False
-    
-        
+  

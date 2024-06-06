@@ -1,6 +1,5 @@
 from flask import render_template, request, redirect, url_for, session
 from flask.wrappers import Response
-from unidecode import unidecode
 import hangman as hg
 import AI
 
@@ -12,8 +11,17 @@ def configure_routes(app):
         if request.method == 'POST':
             difficulty = request.form.get('difficulty')
             session['difficulty'] = difficulty
-            
-            word = AI.get_word(session['difficulty'])
+            return redirect(url_for('language'))
+        
+        return render_template('difficulty.html')
+    
+    
+    @app.route('/language', methods=['GET', 'POST'])
+    def language() -> Response:
+        if request.method == 'POST':
+            language = request.form.get('language')
+            session['language'] = language
+            word = AI.get_word(session['difficulty'], session['language'])
             session['word'] = hg.to_alpha(word)
             
             session['used_letters'] = ''
@@ -23,8 +31,9 @@ def configure_routes(app):
             session['hidden_word'] = '_'*len(session['word'])
             return redirect(url_for('game'))
         
-        return render_template('difficulty.html')
-    
+        
+        return render_template('language.html')
+
 
     @app.route('/game', methods=['GET', 'POST'])
     def game() -> Response:
@@ -61,8 +70,6 @@ def configure_routes(app):
                 session['used_letters'] += letter
             
             if hg.game_state(session['hidden_word'], session['lives']):
-                print('entrou')
-                print(hg.game_state(session['hidden_word'], session['lives']))
                 return redirect(url_for(hg.game_state(session['hidden_word'], session['lives'])))
             
             return render_template('game.html', message = message, message_status = message_status)
@@ -81,7 +88,6 @@ def configure_routes(app):
         if request.method == 'POST':
             session.clear()
             return redirect(url_for('chose_difficulty'))
-        
         return render_template('win.html')
     
     @app.route('/lose', methods=['GET', 'POST'])
@@ -92,5 +98,4 @@ def configure_routes(app):
         if request.method == 'POST':
             session.clear()
             return redirect(url_for('chose_difficulty'))
-        
         return render_template('lose.html')
