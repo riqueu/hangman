@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Você Perdeu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background-color: red;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            margin: 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: white;
+            color: red;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Você perdeu! Tente novamente!</h1>
+    <form method="POST" action="{{ url_for('chose_difficulty') }}">
+        <button type="submit">Jogar novamente</button>
+    </form>
+    <h3 class="end_game">A palavra era: {{ session['original_word'] }}</h3>
+</body>
+</html>

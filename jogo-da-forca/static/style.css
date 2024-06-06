@@ -29,3 +29,19 @@ button {
     border: none;
     cursor: pointer;
 }
+
+.end_game {
+    color: #333;
+}
+
+.error {
+    color: red;
+}
+
+.bad {
+    color: rgb(165, 11, 11);
+}
+
+.good {
+    color: #28a745;
+}
